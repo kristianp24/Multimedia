@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        "use strict";  // face sa apara ca d=6 este gresit, afiseaza eroarea
+
+        //Declarare variabile: var, let, const 
+        //var -> nu are block scope, este vizibila si afara blocului declarat
+        //let -> are block scope, cand se paraseste blockul variabila nu mai e disponibil
+        //const -> are block scope, se intilizeaza constanta ca in orice limbaj
+       // console.log(a) //variabila exista dar nu e definita
+        
+        { // block aferent unei bucle for, if, sau altceva cu {}, aici sunt puse ca exemplu
+            var a = 10;
+            let b = 5;
+            const c = 1;
+        }
+        console.log(a);
+        //console.log(c);
+        
+        const v = [1,2,3];  //putem modifica orice valoare in array dar nu putem schimba referinta, adica randul urm da eroare
+        //v = [4,5,6];
+        v[0] = 5;
+
+        //Dinamic
+        a = 'a'
+
+        f()  //este ok, merge
+        //g() //nu este ok, avem eroare
+        // hoisting 
+        function f(){
+            console.log("f");
+        }
+        let g = function(){
+            console.log("g");
+        }
+        // f()
+        // g()
+
+       // d = 6; // e gresit, dar javascript va asigna variabila fara sa dea exception
+
+    </script>
+
+</body>
+</html>
