@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bar-chart 2</title>
+</head>
+<body>
+    <form>
+        <input type="text" value="5,9,8" id="input">
+        <button id="button"> Draw Chart </button>
+    </form>
+
+    <canvas id="canvas-chart">
+        Your browser does not support canvas!
+    </canvas>
+    <br>
+
+    <!-- <button id="button2">
+        Save chart
+    </button> -->
+
+    <script src="bar_chart2.js">
+        
+        
+    </script>
+      
+    <script>
+        "use strict"
+       let element = document.getElementById('canvas-chart')
+       let input = document.getElementById('input')
+      
+       let chart = new Chart(element)
+       chart.setContext()
+       let button = document.getElementById('button')
+      
+       button.addEventListener('click',() => {
+        event.preventDefault();  //prevents the form resubmission allowing the bar to stay visible
+        const user_Input = input.value
+        chart.draw(user_Input.split(',').map(Number))
+       })
+    
+       
+    </script>
+</body>
+</html>

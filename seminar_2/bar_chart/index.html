@@ -8,13 +8,15 @@
 <body>
     <form>
         <input type="text" value="1,2,3">  <!-- value pune elementele initiale -->
-        <button>Draw Chart</button>
-
+        <button id="button">Draw Chart</button>
+        
     </form>
 
     <canvas id = "canvas-chart">
         Your browser does not support the canvas element.
     </canvas>
+    
+
 
     <script src="canvas-bar-chart-library.js">
 
@@ -24,6 +26,8 @@
         const canvasChart = document.getElementById('canvas-chart')
         const barChart = new BarChart(canvasChart);
         //console.log(barChart.#canvas);
+       
+       
         barChart.draw([1,2,3]);
     </script>
 </body>
