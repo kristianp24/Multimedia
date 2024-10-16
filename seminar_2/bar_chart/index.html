@@ -7,8 +7,8 @@
 </head>
 <body>
     <form>
-        <input type="text" value="1,2,3">  <!-- value pune elementele initiale -->
-        <button id="button">Draw Chart</button>
+        <input id = "tb-values"type="text" value="1,2,3">  <!-- value pune elementele initiale -->
+        <button id="btn-draw">Draw Chart</button>
         
     </form>
 
@@ -24,11 +24,18 @@
     <script>
         "use strict"
         const canvasChart = document.getElementById('canvas-chart')
+        const btnDraw = document.getElementById('btn-draw')
+        const tbValues = document.getElementById('tb-values')
         const barChart = new BarChart(canvasChart);
         //console.log(barChart.#canvas);
-       
-       
-        barChart.draw([1,2,3]);
+        
+        btnDraw.addEventListener('click',() => {
+            const value = tbValues.value;
+            barChart.draw(eval('[' + value +']'));
+            event.preventDefault()
+        })
+        
+        //barChart.draw([1,2,3]);
     </script>
 </body>
 </html>

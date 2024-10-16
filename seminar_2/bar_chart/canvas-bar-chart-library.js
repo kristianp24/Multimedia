@@ -19,6 +19,7 @@ class BarChart{
      */
 
     draw(values){
+         
            const context = this.#canvas.getContext('2d');
            //metodele cu fill deseneaza forme pline, metodele stroke deseneaza doar conturul
            context.fillStyle = "#DEDEDE"  // rosu,verde,albastru
@@ -30,15 +31,21 @@ class BarChart{
 
            const barWidth = this.#canvas.width / values.length;
 
-           context.fillStyle = 'red';// #FFrosu,verde, albastru
+           context.fillStyle = 'red';
+           context.strokeStyle = '#8B0000'
+           context.textAlign="center"
+           context.textBaseline="bottom"
            for(let i = 0; i< values.length; i++){
                const barX = i * barWidth;
-               const barHeight = values[i] * f;
+               const barHeight = values[i] * f * 0.9;
                const barY = this.#canvas.height - barHeight;
+            
 
-
-               context.fillRect(barX, barY, barWidth/2, barHeight)
-               context.strokeRect(barX,barY,barWidth/2,barHeight)
+               context.fillRect(barX + barWidth/4, barY, barWidth/2, barHeight)
+               
+               context.strokeRect(barX + barWidth/4,barY,barWidth/2,barHeight)
+            
+               context.strokeText(values[i],barX + barWidth/2,this.#canvas.height - 20)
            }
     }
 }
