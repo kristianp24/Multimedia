@@ -6,11 +6,11 @@
     <title>Canvas Bar Chart</title>
 </head>
 <body>
-    <form>
+    <!-- <form> -->
         <input id = "tb-values"type="text" value="1,2,3">  <!-- value pune elementele initiale -->
         <button id="btn-draw">Draw Chart</button>
-        
-    </form>
+        <button id="btn-download" disabled> Download </button>
+    <!-- </form> -->
 
     <canvas id = "canvas-chart">
         Your browser does not support the canvas element.
@@ -27,12 +27,38 @@
         const btnDraw = document.getElementById('btn-draw')
         const tbValues = document.getElementById('tb-values')
         const barChart = new BarChart(canvasChart);
+        const btndownload = document.getElementById('btn-download')
         //console.log(barChart.#canvas);
         
+        let boolean = false;
         btnDraw.addEventListener('click',() => {
             const value = tbValues.value;
-            barChart.draw(eval('[' + value +']'));
-            event.preventDefault()
+            const intArray = value.split(',').map(Number)
+            
+            const options ={
+                drawOutline: false,
+                drawLabels: false
+            }
+
+            barChart.draw(intArray.options)
+            btndownload.disabled = false;
+            //event.preventDefault()
+        })
+
+
+        
+ // cand facem convesia in png nu se pierde info, in jpeg se pierde
+        btndownload.addEventListener("click", () =>{
+            const dataURL =  canvasChart.toDataURL('image/webp',1)
+           console.log(dataURL)
+          // event.preventDefault()
+
+          // cream elementul de tip a direct din js
+          const anchor = document.createElement('a')
+          anchor.href = dataURL
+          anchor.download = 'chart.webp'
+          anchor.click()
+           
         })
         
         //barChart.draw([1,2,3]);
