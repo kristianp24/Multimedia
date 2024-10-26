@@ -30,7 +30,6 @@
         const btndownload = document.getElementById('btn-download')
         //console.log(barChart.#canvas);
         
-        let boolean = false;
         btnDraw.addEventListener('click',() => {
             const value = tbValues.value;
             const intArray = value.split(',').map(Number)
@@ -40,7 +39,7 @@
                 drawLabels: false
             }
 
-            barChart.draw(intArray.options)
+            barChart.draw(intArray,options)
             btndownload.disabled = false;
             //event.preventDefault()
         })
