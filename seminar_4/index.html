@@ -10,19 +10,57 @@
         Canvas is not supported.
     </canvas>
 
-    <canvas id = "canvas-image"> 
+    <canvas id = "canvas-image" style="max-width: 100%; max-height: 400px;"> 
         Canvas is not supported.
 
     </canvas>
 
     <script src="canvas-bar-chart-library.js"></script>
-    <script>
-          'use strict'
-
-          docuent.addEventListener('dragover',(e) => e.preventDefault())
+    <script type="module"> // cand avem type=module automat codul este use strict
+        
+        
+          const canvasImage = document.getElementById('canvas-image')  // sau querySelector('#canvas-image')
+          document.addEventListener('dragover',(e) => e.preventDefault())
 
           document.addEventListener('drop', (e) => {
-                 e.preventDefault()
+                 e.preventDefault();
+
+                 // la dataTransfer.files gasim files care sunt dragate
+                 if(e.dataTransfer.files.length > 0){
+                        //daca dragheaza mai multe o luam pe prima
+                        // putem draga si text dar nu afiseaza nimic
+                        const file = e.dataTransfer.files[0];
+                        // console.log(file);
+                        // console.log(e.dataTransfer.types[0]);
+
+                        //File reader
+                        const reader = new FileReader();
+
+                        // asa suntem sigur ca suntem abonati la evinementul de load oricare marime sa aiba fisierul
+                        reader.addEventListener('load', (e)=>{
+                            const dataUrl = reader.result;
+                            //console.log(dataUrl);
+
+                           const img =  document.createElement('img');
+                           img.addEventListener('load', ()=>{
+                              const context = canvasImage.getContext('2d')
+                              canvasImage.width = img.naturalWidth; // dimensunea fisierului incarcat independent de dimesnisune in care se face afisarea
+                              canvasImage.height = img.naturalHeight;
+                              context.drawImage(img, 0, 0);
+                              
+                           });
+                           img.src = dataUrl; // adresa catre imagine
+                           
+                        })
+
+                        // The readAsDataURL() method of the FileReader interface is used to read the contents of the specified Blob or File
+                        reader.readAsDataURL(file);
+
+                       
+
+                 }
+                 console.log(e.dataTransfer.types)
+                 
           })
     </script>
 </body>
