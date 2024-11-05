@@ -1,4 +1,4 @@
-class BarChart{
+export class BarChart{
 
     /**
      * The canvas on which the bar chart will be displayed
@@ -19,7 +19,7 @@ class BarChart{
      * @param {object} options
      */
 
-    draw(values,options){
+    draw(values){
          
            const context = this.#canvas.getContext('2d');
            //metodele cu fill deseneaza forme pline, metodele stroke deseneaza doar conturul
@@ -33,7 +33,7 @@ class BarChart{
            const barWidth = this.#canvas.width / values.length;
 
            context.fillStyle = 'red';
-           context.strokeStyle = '#8B0000'
+           context.strokeStyle = 'gray'
            context.textAlign="center"
            context.textBaseline="bottom"
            for(let i = 0; i< values.length; i++){

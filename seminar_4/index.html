@@ -15,10 +15,9 @@
 
     </canvas>
 
-    <script src="canvas-bar-chart-library.js"></script>
     <script type="module"> // cand avem type=module automat codul este use strict
         
-        
+          import {BarChart} from './canvas-bar-chart-library.js';
           const canvasImage = document.getElementById('canvas-image')  // sau querySelector('#canvas-image')
           document.addEventListener('dragover',(e) => e.preventDefault())
 
@@ -48,6 +47,8 @@
                               canvasImage.height = img.naturalHeight;
                               context.drawImage(img, 0, 0);
                               
+                              drawHistogram();
+                              
                            });
                            img.src = dataUrl; // adresa catre imagine
                            
@@ -62,6 +63,37 @@
                  console.log(e.dataTransfer.types)
                  
           })
+
+          function drawHistogram(){
+            const imageContext = canvasImage.getContext('2d');
+            const imageData = imageContext.getImageData(0, 0, canvasImage.width, canvasImage.height); // ia pixeli de la imagine
+            const data = imageData.data;
+            //jpeg => nu suporta transparenta
+            const v = [];
+            for(let i = 0; i < 256; i++){
+                v.push(0);
+            }
+
+            for(let i = 0; i < data.length; i+=4){
+                 const red = data[i]
+                 const green = data[i+1]
+                 const blue = data[i+2]
+
+                 // histograma pe media celor 3 tonalitati
+                 const average = Math.round((red+green+blue)/3)
+
+                 v[average]++
+            }
+            drawBarChart(v)
+            console.log(v)
+          }
+
+          function drawBarChart(vector){
+            var canvasHisto = document.getElementById('canvas-histogram')
+            var bar = new BarChart(canvasHisto);
+
+            bar.draw(vector);
+          }
     </script>
 </body>
 </html>
