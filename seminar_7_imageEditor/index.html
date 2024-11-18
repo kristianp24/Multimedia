@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 - Image Editor</title>
+</head>
+<body>
+   
+    <canvas id="visible-canvas">
+        The canvas is not supported.
+    </canvas>
+    <input id="file-picker" type="file" accept="image/*">
+
+    <div>
+        <button data-effect="normal">Normal</button>
+        <button data-effect="GrayScale">Grayscale</button>
+        <button data-effect="threshold">Threshold</button>
+    </div>
+
+    <script type="module">
+        import {ImageEditor} from './imageEditor.js'
+
+       const filePicker = document.getElementById('file-picker')
+       const visibleCanvas = document.querySelector('#visible-canvas')
+       
+       const imageEditor = new ImageEditor(visibleCanvas);
+
+       filePicker.addEventListener('change', () => {
+             //console.log(filePicker.value);
+             //console.log(filePicker.files);  // asa avem acces la fisierele selectate de la utilizator
+             const files = filePicker.files;
+             if(files.length > 0){
+                const file = files[0];
+                const reader = new FileReader()
+                reader.addEventListener('load', ()=>{
+                    const dataUrl = reader.result;
+                    //console.log(dataUrl);
+
+                    // pt ca o imagine nu poate fi direct incarcata pe canvas
+                    const img = document.createElement('img');
+                    img.addEventListener('load', ()=>{
+                        // visibleCanvas.width = img.naturalWidth;
+                        // visibleCanvas.height = img.naturalHeight;
+
+                        // const ctx = visibleCanvas.getContext('2d');
+                        // ctx.drawImage(img, 0, 0);
+
+                        imageEditor.changeImg(img);
+                    });
+                    img.src = dataUrl;
+                });
+                reader.readAsDataURL(file);
+             }
+       });
+
+       // asteapta ca parametru un selector css [data-efect] -> toate elementele care au acest atr
+       const buttons = document.querySelectorAll('[data-effect]'); // tot ce e dupa - devine un atrribut de aia e accesat in for
+       for(let i = 0; i< buttons.length; i++){
+          buttons[i].addEventListener('click', (e) => {
+              console.log(e.target.datasets.effect)
+              imageEditor.changeEffect(e.target.dataset.effect)
+          });
+       }
+
+
+    </script>
+</body>
+</html>
