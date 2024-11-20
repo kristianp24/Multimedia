@@ -28,6 +28,13 @@ export class ImageEditor{
          this.changeEffect('normal')
     }
 
+    saveImg(){
+        const dataurl = this.#visibleCanvas.toDataUrl('image/webp');
+        const a = document.createElement('a')
+        a.href = dataurl
+        a.download = 'image.webp'
+        a.click();
+        }
     changeEffect(effect){
        if(this.#effect !== effect){
           this.#effect = effect;
@@ -42,10 +49,20 @@ export class ImageEditor{
                break;
             
            case 'GrayScale':
-            this.#grayscale();
-                 break;
+                this.#grayscale();
+                break;
 
             case 'threshold':
+                this.#threshold(128);
+                break;
+            case 'sepia':
+                this.#sepia();
+                break;
+            case 'darker':
+                this.#darker();
+                break;
+            case 'invert':
+                this.#invert();
                 break;
         }
     }
@@ -62,6 +79,65 @@ export class ImageEditor{
           data[i] = data[i+1] = data[i+2] = Math.round((data[i]+data[i+1]+data[i+2])/3);
        }
        this.#visibleCanvasContext.putImageData(imageData, 0, 0);
+    }
+
+    #threshold(prag){
+        const imageData = this.#offscreenCanvasContext.getImageData(0, 0, this.#offscreenCanvas.width, this.#offscreenCanvas.height);
+        const data = imageData.data
+        for (let i = 0; i<data.length; i+=4){
+                      //          rosu                 verde              albastru
+            var media = (0.2126 * data[i] + 0.7152 * data[i+1] + 0.0722 * data[i+2]);
+            if (media < prag){
+                data[i] = data[i+1] = data[i+2] = 0
+            }
+            else{
+                data[i] = data[i+1] = data[i+2] = 255
+            }
+         }
+         this.#visibleCanvasContext.putImageData(imageData, 0, 0);
+    }
+
+    #sepia(){
+        const imageData = this.#offscreenCanvasContext.getImageData(0,0, this.#offscreenCanvas.width, this.#offscreenCanvas.height);
+        const data  = imageData.data
+        
+        for (let i = 0; i < data.length; i+=4){
+            const r = data[i];
+            const g = data[i+1]
+            const b = data[i+2]
+            data [i] = (r * 0.393) + (g * 0.796) + (b * 0.189);
+            data[i+1] = (r* 0.349) + (g * 0.686) + (b * 0.168);
+            data[i+2] = (r * 0.272) + (g * 0.534) + (b* 0.131);
+        }
+        this.#visibleCanvasContext.putImageData(imageData, 0, 0);
+    }
+
+    #darker(){
+        const imageData = this.#offscreenCanvasContext.getImageData(0,0, this.#offscreenCanvas.width, this.#offscreenCanvas.height);
+        const data  = imageData.data
+        const adjustment = 20;
+        for (let i = 0; i < data.length; i+=4){
+            data[i] = data[i] > adjustment ? data[i] - adjustment : 0;
+            data[i+1] = data[i+1] > adjustment ? data[i+1] - adjustment : 0;
+            data[i+2] = data[i+2] > adjustment ? data[i+2] - adjustment : 0;
+
+        }
+        this.#visibleCanvasContext.putImageData(imageData, 0, 0);
+    }
+    
+    #invert(){
+        const imageData = this.#offscreenCanvasContext.getImageData(0,0, this.#offscreenCanvas.width, this.#offscreenCanvas.height);
+        const data  = imageData.data
+        
+        for (let i = 0; i < data.length; i+=4){
+            const r = data[i];
+            const g = data[i+1]
+            const b = data[i+2]
+            data [i] = 255-r;
+            data[i+1] = 255-g;
+            data[i+2] = 255-b;
+        }
+        this.#visibleCanvasContext.putImageData(imageData, 0, 0);
     }
 
 }

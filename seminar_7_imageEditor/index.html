@@ -17,6 +17,10 @@
         <button data-effect="normal">Normal</button>
         <button data-effect="GrayScale">Grayscale</button>
         <button data-effect="threshold">Threshold</button>
+        <button data-effect="sepia">Sepia</button>
+        <button data-effect="darker">Darker</button>
+        <button data-effect="invert">Invert</button>
+        <button data-effect="btnSave">Save</button>
     </div>
 
     <script type="module">
@@ -59,11 +63,14 @@
        const buttons = document.querySelectorAll('[data-effect]'); // tot ce e dupa - devine un atrribut de aia e accesat in for
        for(let i = 0; i< buttons.length; i++){
           buttons[i].addEventListener('click', (e) => {
-              console.log(e.target.datasets.effect)
+              console.log(e.target.dataset.effect)
               imageEditor.changeEffect(e.target.dataset.effect)
           });
        }
 
+       document.getElementById('btnSave').addEventListener('click', () => {
+        imageEditor.saveImg();
+       })
 
     </script>
 </body>
