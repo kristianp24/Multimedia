@@ -64,6 +64,9 @@ export class ImageEditor{
             case 'invert':
                 this.#invert();
                 break;
+            case 'pixel':
+                this.#drawPixelFrame(10);
+                break;
         }
     }
 
@@ -139,5 +142,31 @@ export class ImageEditor{
         }
         this.#visibleCanvasContext.putImageData(imageData, 0, 0);
     }
+
+    #drawPixelFrame(blocksize) {
+		for(var x = 1; x < this.#offscreenCanvas.width; x += blocksize)
+
+		{
+
+			for(var y = 1; y < this.#offscreenCanvas.height; y += blocksize)
+
+			{
+
+				const imageData = this.#offscreenCanvasContext.getImageData(x, y, 1, 1)
+                const data = imageData.data;
+
+                const r = data[0]
+                const g = data[1]
+                const b = data[2]
+
+                this.#visibleCanvasContext.fillStyle = "rgb("+r+","+g+","+b+")";
+                this.#visibleCanvasContext.fillRect(x, y, blocksize, blocksize)
+
+			}
+
+            
+		}
+
+	}
 
 }
